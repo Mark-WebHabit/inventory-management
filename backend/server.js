@@ -14,14 +14,23 @@ import { corsOptions } from "./config/cors.js";
 
 const app = express();
 dotnev.config();
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: { secure: true, httpOnly: true },
+//   })
+// );
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true },
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === "production", httpOnly: true },
   })
 );
+
 app.use(cors(corsOptions));
 app.use(express.json());
 

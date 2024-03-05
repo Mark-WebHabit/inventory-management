@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Sidebar from "../components/Sidebar";
 
 const MainLayout = () => {
   const [showSideBar, setShowSideBar] = useState(true);
+  const navigate = useNavigate();
 
   const handleHideSideBar = () => {
     setShowSideBar(!showSideBar);
@@ -13,7 +14,7 @@ const MainLayout = () => {
   useEffect(() => {
     fetch("http://localhost:5000/auth/isvalidsession", {
       method: "GET",
-      // credentials: "include",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -27,9 +28,8 @@ const MainLayout = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.success) {
-          // navigate("/app");
-          console.log(data);
+        if (!data.success) {
+          navigate("/");
         }
       })
       .catch((error) => {
@@ -38,7 +38,7 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <Container showSideBar={showSideBar}>
+    <Container>
       <Sidebar
         handleHideSideBar={handleHideSideBar}
         showSideBar={showSideBar}

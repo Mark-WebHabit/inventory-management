@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 const AuthLayout = () => {
   const loc = useLocation().pathname;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/auth/", {
+    fetch("http://localhost:5000/auth", {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,13 +24,13 @@ const AuthLayout = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.success) {
-          // navigate("/app");
-          console.log(data);
+        if (!data.success) {
+          navigate("/app");
         }
       })
       .catch((error) => {
-        setError(error.message);
+        console.log(error.message);
+        // setError(error.message);
       });
   }, []);
 

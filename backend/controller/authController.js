@@ -81,7 +81,7 @@ export const login = asyncHandler(async (req, res) => {
 export const checkSession = (req, res) => {
   // use this function to check if the user has a valid session yet is in the authentication page
   if (req.session?.user) {
-    return res.redirect(`${process.env.CLIENT_BASE_URL}/app`);
+    return res.json({ success: false, message: "Session Found" });
   } else {
     return res.json({ success: true, data: "No Valid Session" });
   }
@@ -89,9 +89,9 @@ export const checkSession = (req, res) => {
 
 export const checkValidSession = (req, res) => {
   // use this function to check if the user has a valid session yet is in the authentication page
-  console.log(req.session.user);
   if (!req.session.user) {
-    return res.redirect(`${process.env.CLIENT_BASE_URL}/auth`);
+    return res.json({ success: false, message: "No Valid Session" });
+    // return res.redirect(`${process.env.CLIENT_BASE_URL}/auth`);
   } else {
     return res.json({ success: true, data: "Valid Session" });
   }
